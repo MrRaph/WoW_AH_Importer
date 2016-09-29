@@ -37,13 +37,7 @@ class ahActions(object):
             settings.realm,
             json.loads(str(s))['auctions']
         )
-
-        # if import_id > 0:
-        #     self.ahAction.get_auctions.async(
-        #         json.loads(r.text)['files'][0]['url'],
-        #         import_id
-        #     )
-
+        
     @rpc
     def get_auctions(self, url, import_id):
         with urllib.request.urlopen(url) as data:
