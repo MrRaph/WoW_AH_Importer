@@ -1,12 +1,47 @@
 version: '2'
 
 services:
-  WoW_AH_Importer:
+  wow_ah_importer_db:
     build: .
     restart: always
     environment:
       - ACTION=run
-      - SERVICE_NAME=service
+      - SERVICE_NAME=db_actions
+    volumes:
+      - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
+    networks:
+      - wow
+  wow_ah_importer_ah:
+    build: .
+    restart: always
+    environment:
+      - ACTION=run
+      - SERVICE_NAME=ah_actions
+    volumes:
+      - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
+    networks:
+      - wow
+  WoW_Rabbit:
+    image: rabbitmq:3-management
+    restart: always
+    networks:
+      - wow
+      - web
+  WoW_MongoDB:
+    image: mongo
+    restart: always
+    volumes:
+      - /data/WoW/mongo_data:/data/db
+    networks:
+      - wow
+      - web
+networks:
+  web:
+    external:
+      name: web  
+  wow:
+    driver: bridge
+
 
 #      docker run -d --hostname my-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 # docker run -it \
