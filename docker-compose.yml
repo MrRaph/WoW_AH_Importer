@@ -9,6 +9,7 @@ services:
       - SERVICE_NAME=db_actions
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
+    dns: 8.8.8.8
     networks:
       - wow
     extra_hosts:
@@ -23,6 +24,7 @@ services:
       - SERVICE_NAME=ah_actions
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
+    dns: 8.8.8.8
     networks:
       - wow
     extra_hosts:
@@ -32,6 +34,8 @@ services:
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always
+    ports:
+      - 5672:5672
     networks:
       - wow
       - web
@@ -40,6 +44,8 @@ services:
     restart: always
     volumes:
       - /data/WoW/mongo_data:/data/db
+    ports:
+      - 27017:27017
     networks:
       - wow
       - web
