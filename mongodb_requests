@@ -1,0 +1,1 @@
+db.auction_data.aggregate([ { $match:   { item: 124442 } }, { $group: { _id: "$item", avg: { $avg: { $divide: ["$buyout", "$quantity"] } } } } ] )

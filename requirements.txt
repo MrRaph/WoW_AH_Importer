@@ -1,0 +1,7 @@
+nameko
+yagmail
+requests
+PyOpenSSL
+nameko-sqlalchemy
+pymysql
+mongoengine

@@ -1,0 +1,22 @@
+#! /bin/sh
+
+. /etc/envvars
+
+exec 2>&1
+set -e
+
+umask 022
+
+
+PROGARGS="install -r ./requirements.txt"
+PROGHOME="/usr/src/app"
+PROGNAME="pip"
+
+
+export HOME=/root
+
+cd  "${PROGHOME}" &&  exec $PROGNAME $PROGARGS
+
+sv d firstrun
+
+mv /etc/runit_init.d/firstrun.runit /root/
