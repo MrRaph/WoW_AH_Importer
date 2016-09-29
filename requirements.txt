@@ -3,4 +3,3 @@ yagmail
 requests
 PyOpenSSL
 mongoengine
-erk
