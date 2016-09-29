@@ -1,0 +1,3 @@
+#! /bin/sh
+
+echo  "database_url = 'mongodb://ah:ah@"$(ping -c1 ahimporter_WoW_MongoDB_1.ahimporter_wow | grep " bytes from" | awk '{print $4}' | awk -F':' '{print $1}')"/ah'" >> /usr/src/app/settings.py
