@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cd /usr/src/app && $(which nameko) ${ACTION} ${SERVICE_NAME} 
