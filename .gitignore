@@ -1,1 +1,3 @@
 app/settings.py
+app/__pycache/*
+hidden
