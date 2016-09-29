@@ -3,3 +3,4 @@ yagmail
 requests
 PyOpenSSL
 mongoengine
+os

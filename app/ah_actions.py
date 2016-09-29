@@ -30,7 +30,7 @@ class ahActions(object):
         with urllib.request.urlopen(json.loads(r.text)['files'][0]['url']) as data:
             s = data.read().decode('utf-8')
 
-        import_id = self.dbAction.insert_auction_set(
+        import_id = self.dbAction.insert_auction_set.async(
             json.loads(r.text)['files'][0]['url'],
             json.loads(r.text)['files'][0]['lastModified'],
             settings.realm,
