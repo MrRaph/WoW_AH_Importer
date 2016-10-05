@@ -1,0 +1,11 @@
+- hosts: ScaleWay_Docker
+  name: "** LOCALHOST **"
+  remote_user: root
+  gather_facts: True
+  tasks:
+   - name: Get stuff from git
+     git: repo=git@github.com:MrRaph/WoW_AH_Importer.git dest=/data/WoW/AH_Importer accept_hostkey=True
+   - name: Build de l'image
+     command: docker-compose build
+     args:
+       chdir: /data/WoW/AH_Importer
