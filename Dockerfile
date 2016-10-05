@@ -24,7 +24,7 @@ RUN pip install --upgrade pip \
 COPY scripts/services/  /etc/supervisor.d/
 COPY app/ /usr/src/app/
 COPY scripts/my_runonce/ /etc/my_runonce/
-RUN chmod -R +x /etc/my_runonce
+RUN chmod -R +x /etc/my_runonce && mkdir -p /etc/workaround-docker-2267
 
 # Set environment variables.
 ENV HOME /root
