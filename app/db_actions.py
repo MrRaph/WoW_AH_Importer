@@ -20,6 +20,7 @@ connect(host=settings.database_url, alias='default')
 class dbActions(object):
     name = "dbActions"
 
+    dbAction = RpcProxy('dbActions')
     db_session = None
 
     @rpc
@@ -28,8 +29,7 @@ class dbActions(object):
         connection = db_session
 
     @rpc
-    def insert_auction_set(self, url, lastModified, realm, auctions):
-
+    def insert_auction_import(self, url, lastModified, realm):
         records = AuctionImports.objects(url=url, lastModified=lastModified, realm=realm)
 
         if len(records) == 0:
@@ -43,15 +43,25 @@ class dbActions(object):
             auction_import.save()
         else:
             print('Record already exists !')
-            auction_import = records
+            auction_import = records[0]
+
+        return auction_import.id
+
+    @rpc
+    def insert_auction_set(self, url, lastModified, realm, auctions):
+
+        import_id = self.dbAction.insert_auction_import(
+            url,
+            lastModified,
+            realm
+        )
 
         bulk = AuctionData._get_collection().initialize_ordered_bulk_op()
 
         print(datetime.now())
 
         for auction in auctions:  # where users is a list of dicts containing data to work on
+            auction['import_ref'] = import_id
             bulk.find({ "auc": auction['auc'] }).upsert().replace_one(auction)
 
         result = bulk.execute()
-
-        print(datetime.now())
