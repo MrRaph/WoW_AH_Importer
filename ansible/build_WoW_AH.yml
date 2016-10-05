@@ -5,15 +5,17 @@
   gather_facts: True
 
   tasks:
-   - name: Get stuff from git
+   - name: Mise à jour du dossier depuis GitHub
      git: repo=git@github.com:MrRaph/WoW_AH_Importer.git dest=/data/WoW/AH_Importer accept_hostkey=True
      run_once: True
+
    - name: Build de l'image
      command: docker-compose build
      args:
        chdir: /data/WoW/AH_Importer
-   - name: Build de l'image
-     command: docker-compose up -d
+
+   - name: Mise à jour des containers
+     command: DOCKER_HOST=:4000 docker-compose up -d
      args:
        chdir: /data/WoW/AH_Importer
      run_once: True

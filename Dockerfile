@@ -31,4 +31,4 @@ ENV HOME /root
 
 # Define default command.
 #CMD ["/my_init"]
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
