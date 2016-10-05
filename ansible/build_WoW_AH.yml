@@ -15,7 +15,9 @@
        chdir: /data/WoW/AH_Importer
 
    - name: Mise à jour des containers
-     command: DOCKER_HOST=:4000 docker-compose up -d
+     command: docker-compose up -d
+     environment:
+       DOCKER_HOST: ":4000"
      args:
        chdir: /data/WoW/AH_Importer
      run_once: True
