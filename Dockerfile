@@ -8,16 +8,15 @@ COPY scripts/etc/ /etc/
 RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y --no-install-recommends ca-certificates \
      rsyslog supervisor build-essential libffi-dev libssl-dev \
-     python-dev python3-pip wget python3-openssl openssl dumb-init && \
-    chmod +x /my_*; return 0 && \
-    mkdir /etc/my_runonce /etc/my_runalways /etc/container_environment /etc/workaround-docker-2267 /var/log/supervisor && \
+     python-dev python3-pip wget python3-openssl openssl && \
+    mkdir /etc/my_runonce /etc/my_runalways /etc/container_environment && \
     touch /var/log/startup.log && chmod 666 /var/log/startup.log && \
     rm -rf rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install --upgrade pip \
-  && pip install nameko supervisor-stdout \
+  && pip install nameko supervisor-stdout dumb-init \
   && pip install -r /tmp/requirements.txt \
   && apt-get purge -y build-essential
 
@@ -31,5 +30,5 @@ ENV HOME /root
 
 # Define default command.
 #CMD ["/my_init"]
-ENTRYPOINT["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
