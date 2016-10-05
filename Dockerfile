@@ -30,4 +30,5 @@ RUN chmod -R +x /etc/my_runonce && mkdir -p /etc/workaround-docker-2267
 ENV HOME /root
 
 # Define default command.
-CMD ["/my_init"]
+#CMD ["/my_init"]
+CMD ["/usr/bin/supervisord"]
