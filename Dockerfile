@@ -19,7 +19,7 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install --upgrade pip \
   && pip install nameko supervisor-stdout \
   && pip install -r /tmp/requirements.txt \
-  && apt-get purge build-essential
+  && apt-get purge -y build-essential
 
 COPY scripts/services/  /etc/supervisor.d/
 COPY app/ /usr/src/app/
