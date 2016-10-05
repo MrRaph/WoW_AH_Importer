@@ -24,7 +24,7 @@ services:
       - SERVICE_NAME=ah_actions
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
-    dns: 8.8.8.8
+#    dns: 8.8.8.8
     networks:
       - wow
     extra_hosts:
