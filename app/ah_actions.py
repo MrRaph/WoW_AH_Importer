@@ -10,7 +10,7 @@ from datetime import datetime
 
 import pprint
 
-CONFIG = {'AMQP_URI': settings.ampq_uri}
+# CONFIG = {'AMQP_URI': settings.ampq_uri}
 
 class ahActions(object):
     name = "ahActions"

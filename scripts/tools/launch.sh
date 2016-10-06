@@ -5,18 +5,37 @@ export APP_DIR="/usr/src/app"
 
 if [[ ! -z ${ACTION} && ! -z ${SERVICE_NAME} && ! -z ${RABBIT_HOST} ]]
 then
-  echo "We'll ${ACTION} nameko service ${SERVICE_NAME}"
-  # cd ${APP_DIR}
-  # AMQP_HOST=$(grep AMQP_URI config.yml  | awk -F'@' '{print $2}' | sed -e "s/'//")
+  # echo "We'll ${ACTION} nameko service ${SERVICE_NAME}"
   export AMQP_IP=$(ping -c 1 ${RABBIT_HOST} | grep " bytes from " | awk -F':' '{print $1}' | awk '{print $4}')
+
+  if [[ -z ${RABBIT_USER} ]]
+  then
+    export RABBIT_USER=guest
+  fi
+
+  if [[ -z ${RABBIT_PASS} ]]
+  then
+    export RABBIT_PASS=guest
+  fi
+
+  export AMQP_URI="amqp://${RABBIT_USER}:${RABBIT_PASS}@${AMQP_IP}"
+  echo "AMQP_URI: '${AMQP_URI}'" >> ${APP_DIR}/config.yml
+
 else
+  echo "Missing Service or RabbitMQ env ..."
   exit 1
 fi
 
 if [[ ! -z ${MONGO_HOST} ]]
 then
   export MONGO_IP=$(ping -c 1 ${MONGO_HOST} | grep " bytes from " | awk -F':' '{print $1}' | awk '{print $4}')
-fi
 
-echo "AMQP :" ${AMQP_IP}
-echo "MONGO :" ${MONGO_IP}
+    if [[ ! -z ${MONGO_DB} && ! -z ${MONGO_USER} && ! -z ${MONGO_PASS} ]]
+    then
+      export MONGO_URI="mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}/${MONGO_DB}"
+    else
+      echo "Missing Mongo env ..."
+      exit 1
+    fi
+
+fi

@@ -4,6 +4,7 @@ from nameko.timer import timer
 from nameko.rpc import rpc, RpcProxy
 from datetime import datetime
 import settings
+import os
 
 from mongoengine import connect
 
@@ -12,10 +13,10 @@ import pprint
 
 from models import AuctionImports, AuctionData
 
-CONFIG = {'AMQP_URI': settings.ampq_uri}
+# CONFIG = {'AMQP_URI': settings.ampq_uri}
 
 global connection
-connect(host=settings.database_url, alias='default')
+connect(host=os.environ['MONGO_URI'], alias='default')
 
 class dbActions(object):
     name = "dbActions"
