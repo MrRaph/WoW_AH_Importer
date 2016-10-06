@@ -37,7 +37,7 @@ services:
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always
-    name: WoW_Rabbit
+    container_name: WoW_Rabbit
 #    ports:
 #      - 5672:5672
     environment:
@@ -48,7 +48,7 @@ services:
   WoW_MongoDB:
     image: mongo
     restart: always
-    name: WoW_Mongo
+    container_name: WoW_Mongo
     volumes:
       - /data/WoW/mongo_data:/data/db
 #    ports:
