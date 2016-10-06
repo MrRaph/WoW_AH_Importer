@@ -20,6 +20,7 @@ then
   fi
 
   export AMQP_URI="amqp://${RABBIT_USER}:${RABBIT_PASS}@${AMQP_IP}"
+  echo "AMQP_URI: '${AMQP_URI}'" >> ${APP_DIR}/config.yml
 
 else
   echo "Missing Service or RabbitMQ env ..."
@@ -40,4 +41,4 @@ then
 fi
 
 cd ${APP_DIR}
-${NAMEKO} ${ACTION} --broker=${AMQP_URI} --config=${APP_DIR}/config.yml ${SERVICE_NAME}
+${NAMEKO} ${ACTION} --config=${APP_DIR}/config.yml ${SERVICE_NAME}
