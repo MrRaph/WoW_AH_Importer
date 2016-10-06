@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export APP_DIR="/usr/src/app"
+export NAMEKO=$(which nameko)
 # export APP_DIR="/home/raphael/ownCloud/Documents/Perso/Developpement/Python/WoW/Wow_AH_Importer/app"
 
 if [[ ! -z ${ACTION} && ! -z ${SERVICE_NAME} && ! -z ${RABBIT_HOST} ]]
@@ -19,7 +20,6 @@ then
   fi
 
   export AMQP_URI="amqp://${RABBIT_USER}:${RABBIT_PASS}@${AMQP_IP}"
-  echo "AMQP_URI: '${AMQP_URI}'" >> ${APP_DIR}/config.yml
 
 else
   echo "Missing Service or RabbitMQ env ..."
@@ -32,10 +32,12 @@ then
 
     if [[ ! -z ${MONGO_DB} && ! -z ${MONGO_USER} && ! -z ${MONGO_PASS} ]]
     then
-      export MONGO_URI="mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}/${MONGO_DB}"
+      export MONGO_URI="mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_IP}/${MONGO_DB}"
     else
       echo "Missing Mongo env ..."
       exit 1
     fi
-
 fi
+
+cd ${APP_DIR}
+${NAMEKO} ${ACTION} --broker=${AMQP_URI} --config=${APP_DIR}/config.yml ${SERVICE_NAME}

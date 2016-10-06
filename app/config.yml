@@ -1,5 +1,4 @@
 # foobar.yaml
-# AMQP_URI: 'amqp://guest:guest@ahimporter_WoW_Rabbit_1.ahimporter_wow'
 WEB_SERVER_ADDRESS: '0.0.0.0:8000'
 rpc_exchange: 'nameko-rpc'
 max_workers: 10
