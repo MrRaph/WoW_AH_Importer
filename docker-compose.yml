@@ -7,8 +7,8 @@ services:
     environment:
       - ACTION=run
       - SERVICE_NAME=db_actions
-      - RABBIT_HOST="WoW_Rabbit.ahimporter_wow"
-      - MONGO_HOST="WoW_Mongo.ahimporter_wow"
+      - RABBIT_HOST=WoW_Rabbit.ahimporter_wow
+      - MONGO_HOST=WoW_Mongo.ahimporter_wow
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
     dns: 8.8.8.8
@@ -24,7 +24,7 @@ services:
     environment:
       - ACTION=run
       - SERVICE_NAME=ah_actions
-      - RABBIT_HOST="WoW_Rabbit.ahimporter_wow"
+      - RABBIT_HOST=WoW_Rabbit.ahimporter_wow
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
 #    dns: 8.8.8.8
