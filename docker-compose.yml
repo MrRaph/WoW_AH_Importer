@@ -34,24 +34,28 @@ services:
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always
-    ports:
-      - 5672:5672
+#    ports:
+#      - 5672:5672
+    environment:
+      - SERVICE_NAME=rabbitmq
     networks:
       - wow
-      - web
+#      - web
   WoW_MongoDB:
     image: mongo
     restart: always
     volumes:
       - /data/WoW/mongo_data:/data/db
-    ports:
-      - 27017:27017
+#    ports:
+#      - 27017:27017
+    environment:
+      - SERVICE_NAME=mongodb
     networks:
       - wow
-      - web
+#      - web
 networks:
-  web:
-    external:
-      name: web
+#  web:
+#    external:
+#      name: web
   wow:
     driver: overlay
