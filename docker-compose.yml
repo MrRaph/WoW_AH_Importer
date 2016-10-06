@@ -7,6 +7,8 @@ services:
     environment:
       - ACTION=run
       - SERVICE_NAME=db_actions
+      - RABBIT_HOST="WoW_Rabbit.ahimporter_wow"
+      - MONGO_HOST="WoW_Mongo.ahimporter_wow"
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
     dns: 8.8.8.8
@@ -22,6 +24,7 @@ services:
     environment:
       - ACTION=run
       - SERVICE_NAME=ah_actions
+      - RABBIT_HOST="WoW_Rabbit.ahimporter_wow"
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
 #    dns: 8.8.8.8
@@ -34,6 +37,7 @@ services:
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always
+    name: WoW_Rabbit
 #    ports:
 #      - 5672:5672
     environment:
@@ -44,6 +48,7 @@ services:
   WoW_MongoDB:
     image: mongo
     restart: always
+    name: WoW_Mongo
     volumes:
       - /data/WoW/mongo_data:/data/db
 #    ports:
@@ -58,4 +63,5 @@ networks:
 #    external:
 #      name: web
   wow:
-    driver: overlay
+    external:
+      name: ahimporter_wow
