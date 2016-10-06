@@ -1,74 +1,69 @@
 version: '2'
 
 services:
-  wow_ah_importer_db:
+  wow_db:
     build: .
     restart: always
     environment:
       - ACTION=run
       - SERVICE_NAME=db_actions
-      - RABBIT_HOST=WoW_Rabbit.ahimporter_wow
+      - RABBIT_HOST=WoW_Rabbit.wow
       - RABBIT_USER=guest
       - RABBIT_PASS=guest
-      - MONGO_HOST=WoW_Mongo.ahimporter_wow
+      - MONGO_HOST=WoW_Mongo.wow
       - MONGO_DB=ah
       - MONGO_USER=ah
       - MONGO_PASS=ah
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
-    dns: 8.8.8.8
+    dns: 
+      - 8.8.8.8
+      - 172.17.0.1
     networks:
       - wow
-    extra_hosts:
-      - "eu.api.battle.net:23.21.41.101"
-      - "us.battle.net:24.105.29.40"
-      - "eu.battle.net:185.60.115.40"
-  wow_ah_importer_ah:
+#    extra_hosts:
+#      - "eu.api.battle.net:23.21.41.101"
+#      - "us.battle.net:24.105.29.40"
+#      - "eu.battle.net:185.60.115.40"
+  wow_ah:
     build: .
     restart: always
     environment:
       - ACTION=run
       - SERVICE_NAME=ah_actions
-      - RABBIT_HOST=WoW_Rabbit.ahimporter_wow
+      - RABBIT_HOST=WoW_Rabbit.wow
       - RABBIT_USER=guest
       - RABBIT_PASS=guest
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
-#    dns: 8.8.8.8
+    dns:
+      - 8.8.8.8
+      - 172.17.0.1
     networks:
       - wow
-    extra_hosts:
-      - "eu.api.battle.net:23.21.41.101"
-      - "us.battle.net:24.105.29.40"
-      - "eu.battle.net:185.60.115.40"
+#    extra_hosts:
+#      - "eu.api.battle.net:23.21.41.101"
+#      - "us.battle.net:24.105.29.40"
+#      - "eu.battle.net:185.60.115.40"
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always
     container_name: WoW_Rabbit
-#    ports:
-#      - 5672:5672
     environment:
       - SERVICE_NAME=rabbitmq
     networks:
       - wow
-#      - web
   WoW_MongoDB:
     image: mongo
     restart: always
     container_name: WoW_Mongo
     volumes:
       - /data/WoW/mongo_data:/data/db
-#    ports:
-#      - 27017:27017
     environment:
       - SERVICE_NAME=mongodb
     networks:
       - wow
-#      - web
 networks:
-#  web:
-#    external:
-#      name: web
   wow:
     external:
-      name: ahimporter_wow
+      name: wow
