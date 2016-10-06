@@ -40,5 +40,11 @@ then
     fi
 fi
 
+tail -f /var/log/supervisor/* &
+TAIL_PID=$!
+
 cd ${APP_DIR}
 ${NAMEKO} ${ACTION} --config=${APP_DIR}/config.yml ${SERVICE_NAME}
+
+kill $TAIL_PID
+wait $TAIL_PID
