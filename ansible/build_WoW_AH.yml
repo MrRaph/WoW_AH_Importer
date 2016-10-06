@@ -8,11 +8,14 @@
    - name: Mise à jour du dossier depuis GitHub
      git: repo=git@github.com:MrRaph/WoW_AH_Importer.git dest=/data/WoW/AH_Importer accept_hostkey=True
      run_once: True
+     register: git
 
    - name: Build de l'image
      command: docker-compose build
      args:
        chdir: /data/WoW/AH_Importer
+     when: git.changed
+     register: build
 
    - name: Mise à jour des containers
      command: docker-compose up -d
@@ -21,3 +24,4 @@
      args:
        chdir: /data/WoW/AH_Importer
      run_once: True
+     when: build.changed
