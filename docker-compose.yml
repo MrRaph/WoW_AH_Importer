@@ -2,7 +2,7 @@ version: '2'
 
 services:
   wow_db:
-    build: .
+    build: ./nameko
     restart: always
     environment:
       - ACTION=run
@@ -16,17 +16,13 @@ services:
       - MONGO_PASS=ah
     volumes:
       - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
-    dns: 
+    dns:
       - 8.8.8.8
       - 172.17.0.1
     networks:
       - wow
-#    extra_hosts:
-#      - "eu.api.battle.net:23.21.41.101"
-#      - "us.battle.net:24.105.29.40"
-#      - "eu.battle.net:185.60.115.40"
   wow_ah:
-    build: .
+    build: ./nameko
     restart: always
     environment:
       - ACTION=run
@@ -41,10 +37,22 @@ services:
       - 172.17.0.1
     networks:
       - wow
-#    extra_hosts:
-#      - "eu.api.battle.net:23.21.41.101"
-#      - "us.battle.net:24.105.29.40"
-#      - "eu.battle.net:185.60.115.40"
+  wow_api:
+    build: ./api
+    restart: always
+    environment:
+      - ACTION=run
+      - SERVICE_NAME=ah_actions
+      - RABBIT_HOST=WoW_Rabbit.wow
+      - RABBIT_USER=guest
+      - RABBIT_PASS=guest
+    volumes:
+      - /data/WoW/AH_Importer/app/settings.py:/usr/src/app/settings.py
+    dns:
+      - 8.8.8.8
+      - 172.17.0.1
+    networks:
+      - wow
   WoW_Rabbit:
     image: rabbitmq:3-management
     restart: always

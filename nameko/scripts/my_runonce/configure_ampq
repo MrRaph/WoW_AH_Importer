@@ -1,0 +1,5 @@
+#! /bin/sh
+#amqp_ip=$(ping -c1 ahimporter_WoW_Rabbit_1.ahimporter_wow | grep " bytes from" | awk '{print $4}' | awk -F':' '{print $1}')
+#sed -i "s/#AMPQ/${amqp_ip}/" /usr/src/app/config.yml
+
+echo  "AMQP_URI: 'amqp://guest:guest@"$(ping -c1 ahimporter_WoW_Rabbit_1.ahimporter_wow | grep " bytes from" | awk '{print $4}' | awk -F':' '{print $1}')"'" >> /usr/src/app/config.yml

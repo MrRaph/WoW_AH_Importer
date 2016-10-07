@@ -1,0 +1,4 @@
+nameko
+requests
+PyOpenSSL
+mongoengine

@@ -4,7 +4,7 @@ from nameko.standalone.rpc import ClusterRpcProxy
 
 app = Flask(__name__)
 Swagger(app)
-# CONFIG = {'AMQP_URI': "amqp://guest:guest@localhost"}
+CONFIG = {'AMQP_URI': "#AMQP#"}
 
 
 @app.route('/best_price/<int:item_id>', methods=['POST'])
