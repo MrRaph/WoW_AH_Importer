@@ -14,6 +14,7 @@ import pprint
 from models import AuctionImports, AuctionData
 
 # CONFIG = {'AMQP_URI': settings.ampq_uri}
+# CONFIG = {'AMQP_URI': os.environ['AMQP_URI']}
 
 global connection
 connect(host=os.environ['MONGO_URI'], alias='default')
@@ -49,13 +50,7 @@ class dbActions(object):
         return auction_import.id
 
     @rpc
-    def insert_auction_set(self, url, lastModified, realm, auctions):
-
-        import_id = self.dbAction.insert_auction_import(
-            url,
-            lastModified,
-            realm
-        )
+    def insert_auction_set(self, url, lastModified, realm, import_id, auctions):
 
         bulk = AuctionData._get_collection().initialize_ordered_bulk_op()
 

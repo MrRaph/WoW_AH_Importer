@@ -7,10 +7,13 @@ from nameko.rpc import rpc, RpcProxy
 import settings
 import urllib.request
 from datetime import datetime
+import os
 
 import pprint
 
 # CONFIG = {'AMQP_URI': settings.ampq_uri}
+
+# CONFIG = {'AMQP_URI': os.environ['AMQP_URI']}
 
 class ahActions(object):
     name = "ahActions"
@@ -19,7 +22,7 @@ class ahActions(object):
     ahAction = RpcProxy('ahActions')
 
     @rpc
-    @timer(interval=1800)
+    #@timer(interval=1800)
     def get_ah_auction_file(self):
         url = 'https://'+ settings.region +'.api.battle.net/wow/auction/data/'+ settings.realm +'?locale='+ settings.locale +'&apikey=' + settings.apiKey
 
@@ -29,7 +32,10 @@ class ahActions(object):
 
         r = requests.get(url, headers=headers)
 
-        with urllib.request.urlopen(json.loads(r.text)['files'][0]['url']) as data:
+        global req
+        req = json.loads(r.text)['files'][0]
+
+        with urllib.request.urlopen(req['url']) as data:
             s = data.read().decode('utf-8')
 
             print(datetime.now())
@@ -37,28 +43,18 @@ class ahActions(object):
             auctions = json.loads(str(s))['auctions']
             chunkSize = 5000
             for i in range(0, len(auctions), chunkSize):
-                self.dbAction.insert_auction_set.async(
-                    json.loads(r.text)['files'][0]['url'],
-                    json.loads(r.text)['files'][0]['lastModified'],
+                import_id = self.dbAction.insert_auction_import(
+                    req['url'],
+                    req['lastModified'],
+                    settings.realm
+                )
+
+                self.dbAction.insert_auction_set.call_async(
+                    req['url'],
+                    req['lastModified'],
                     settings.realm,
+                    import_id,
                     auctions[i:i+chunkSize]
                 )
 
             print(datetime.now())
-
-    #
-    # @rpc
-    # def get_auctions(self, url, import_id):
-    #     with urllib.request.urlopen(url) as data:
-    #         s = data.read().decode('utf-8')
-    #
-    #     counter = 0
-    #     for auction in json.loads(str(s))['auctions']:
-    #         self.dbAction.insert_auction_data.async(
-    #             auction, import_id
-    #         )
-    #         if counter < 1000:
-    #             counter = counter + 1
-    #         else:
-    #             counter = 0
-    #             self.dbAction.flush_and_commit()

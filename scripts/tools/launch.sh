@@ -44,7 +44,8 @@ tail -f /var/log/supervisor/* &
 TAIL_PID=$!
 
 cd ${APP_DIR}
-${NAMEKO} ${ACTION} --config=${APP_DIR}/config.yml ${SERVICE_NAME}
+# ${NAMEKO} ${ACTION} --config=${APP_DIR}/config.yml ${SERVICE_NAME}
+${NAMEKO} ${ACTION} --broker=${AMQP_URI} ${SERVICE_NAME}
 
 kill $TAIL_PID
 wait $TAIL_PID
