@@ -22,7 +22,7 @@ class ahActions(object):
     ahAction = RpcProxy('ahActions')
 
     @rpc
-    #@timer(interval=1800)
+    @timer(interval=1800)
     def get_ah_auction_file(self):
         url = 'https://'+ settings.region +'.api.battle.net/wow/auction/data/'+ settings.realm +'?locale='+ settings.locale +'&apikey=' + settings.apiKey
 
