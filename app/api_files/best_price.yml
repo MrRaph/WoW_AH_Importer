@@ -1,0 +1,21 @@
+A simple test API
+This endpoint does nothing
+Only returns "test"
+---
+tags:
+  - testapi
+parameters:
+  - name: size
+    in: query
+    type: string
+    description: size of elements
+responses:
+  200:
+    description: A single user item
+    schema:
+      id: return_test
+      properties:
+        result:
+          type: string
+          description: The test
+          default: 'test'
